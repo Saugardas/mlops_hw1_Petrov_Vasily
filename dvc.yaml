@@ -1,0 +1,22 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+      - src/prepare.py
+      - data/raw/data.csv
+    params:
+      - prepare.test_size
+      - prepare.random_state
+    outs:
+      - data/processed
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/processed
+    params:
+      - train.k
+    outs:
+      - model.pkl
+      - metrics.json
