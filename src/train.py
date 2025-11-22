@@ -1,6 +1,5 @@
 import numpy as np
-import pickle
-import json
+import mlflow
 import yaml
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score
@@ -16,26 +15,29 @@ y_train = np.load("data/processed/y_train.npy")
 y_test = np.load("data/processed/y_test.npy")
 
 k = params["train"]["k"]
+# Подключение MLflow
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_experiment("Эксперимент")
 
-# Обучение
-knn = KNeighborsClassifier(n_neighbors=k)
-knn.fit(X_train, y_train)
+with mlflow.start_run(run_name=f"knn_for_k_{k}"):
+    # Логируем параметры
+    mlflow.log_param("k", k)
 
-# Предсказание и метрики
-y_pred = knn.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-precision = precision_score(y_test, y_pred, average='macro')
-recall = recall_score(y_test, y_pred, average='macro')
+    # Обучение
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, y_train)
 
-# Сохранение модели
-with open("model.pkl", "wb") as f:
-    pickle.dump(knn, f)
+    # Предсказание и метрики
+    y_pred = knn.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='macro')
+    recall = recall_score(y_test, y_pred, average='macro')
 
-# Сохранение метрик (для DVC + MLflow в будущем)
-metrics = {
-    "accuracy": float(accuracy),
-    "precision": float(precision),
-    "recall": float(recall)
-}
-with open("metrics.json", "w") as f:
-    json.dump(metrics, f, indent=2)
+    # Логируем метрики
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("precision", precision)
+    mlflow.log_metric("recall", recall)
+
+    # Логируем модель
+    mlflow.log_param("model", "KNeighborsClassifier")
+    mlflow.sklearn.log_model(knn, name=f"model_k{k}")
