@@ -5,7 +5,8 @@
 
 Для хранения датасета используется S3 хранилище Cloudru (см .dvc/config)
 
-Инструкция по запуску:
+## Инструкция по запуску:
+
 Склонировать проект:
 `git clone git@github.com:Saugardas/mlops_hw1_Petrov_Vasily.git`
 
