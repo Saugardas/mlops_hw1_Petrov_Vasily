@@ -6,3 +6,5 @@
     endpointurl = https://s3.cloud.ru
     region = ru-central-1
     use_ssl = true
+    access_key_id = ''
+    secret_access_key = ''
