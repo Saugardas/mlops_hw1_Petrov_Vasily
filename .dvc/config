@@ -1,0 +1,8 @@
+[core]
+    remote = cloudru
+    autostage = true
+['remote "cloudru"']
+    url = s3://bucket-mlops
+    endpointurl = https://s3.cloud.ru
+    region = ru-central-1
+    use_ssl = true

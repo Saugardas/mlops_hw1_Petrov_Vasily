@@ -17,6 +17,7 @@ stages:
       - data/processed
     params:
       - train.k
-    outs:
-      - model.pkl
-      - metrics.json
+    # outs:
+    #  - model.pkl
+    #  - metrics.json
+

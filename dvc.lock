@@ -10,13 +10,17 @@ stages:
       isexec: true
     - path: src/prepare.py
       hash: md5
-      md5: c9e050f951087e0f8c217952af720f03
-      size: 1033
+      md5: 1f64bbef3892c724fea90b17fa35bc5a
+      size: 1241
       isexec: true
+    params:
+      params.yaml:
+        prepare.random_state: 42
+        prepare.test_size: 0.3
     outs:
     - path: data/processed
       hash: md5
-      md5: 03339e53ce60d5124d8d4dcae4bac1d2.dir
+      md5: 6f0f809896d418b862dd45d5dd3f8ca9.dir
       size: 4112
       nfiles: 4
   train:
@@ -24,22 +28,14 @@ stages:
     deps:
     - path: data/processed
       hash: md5
-      md5: 03339e53ce60d5124d8d4dcae4bac1d2.dir
+      md5: 6f0f809896d418b862dd45d5dd3f8ca9.dir
       size: 4112
       nfiles: 4
     - path: src/train.py
       hash: md5
-      md5: a9bf24c7d3f66be9942bf8d1269702b4
-      size: 1217
+      md5: 30bc78cee39d13a29528e867bca00112
+      size: 1457
       isexec: true
-    outs:
-    - path: metrics.json
-      hash: md5
-      md5: 72f4b8c37963246e26fc71026dd134ec
-      size: 103
-      isexec: true
-    - path: model.pkl
-      hash: md5
-      md5: d554bd4dbe2a257b613af79f06416af7
-      size: 4700
-      isexec: true
+    params:
+      params.yaml:
+        train.k: 5
